@@ -120,17 +120,17 @@ export PATH
 
 1.	Without actually executing against the platform. it has sub commands
 
-	11.	list
+	1.	list
 
-	11.	mv
+	1.	mv
 	
-	11.	pull
+	1.	pull
 	
-	11.	push
+	1.	push
 	
-	11.	rm
+	1.	rm
 	
-	11.	show
+	1.	show
 
 		terraform state show <resource_name>
 		Ex: terraform state show google_compute_network.our_development_network
