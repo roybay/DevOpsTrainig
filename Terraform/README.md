@@ -11,6 +11,6 @@ Build the resources
 
 		terraform build
 		terraform apply
-        terraform apply -var-file="starter.tfvars"
+        	terraform apply -var-file="starter.tfvars"
 
 
