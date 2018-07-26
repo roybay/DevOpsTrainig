@@ -1,0 +1,13 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+
+#Compiled files
+*.tfstate
+*.tfstate.backup
+
+#Module directory
+.terraform/
+
+#InteliJ
+.idea
+
+.DS_Store
