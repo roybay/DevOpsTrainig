@@ -1,5 +1,5 @@
-resource "google_container_cluster" "ulti" {
-  name               = "ulti-cluster"
+resource "google_container_cluster" "test" {
+  name               = "test-cluster"
   zone               = "us-east1-b"
   initial_node_count = 1
 

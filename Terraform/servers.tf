@@ -24,9 +24,6 @@ resource "google_compute_instance" "opendj_config_store" {
   }
 }
 
-
-
-
 resource "google_compute_instance" "opendj_cts_store" {
   "boot_disk" {
     initialize_params {
@@ -52,5 +49,3 @@ resource "google_compute_instance" "opendj_cts_store" {
     scopes = ["userinfo-email", "compute-ro", "storage-ro"]
   }
 }
-
-
