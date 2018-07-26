@@ -137,9 +137,9 @@ export PATH
 
 1.	Create the diagram for all infrasturcture
 
-11.	There is a dependency: GraphViz or dot
+	1.	There is a dependency: GraphViz or dot
 	
-		terraform graph | dot -Tsvg > graph.svg
+			terraform graph | dot -Tsvg > graph.svg
 	 
 
 ### Good to know comments
