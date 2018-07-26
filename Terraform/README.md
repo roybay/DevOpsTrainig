@@ -87,10 +87,6 @@ export PATH
 		terraform apply -var-file="starter.tfvars"
 
 ***
-## Create Resource 
-
-
-***
 
 ## Terraform Comments 
 
