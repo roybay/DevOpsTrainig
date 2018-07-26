@@ -1,36 +1,45 @@
 # Terraform Learning
 
-****
 ## Download CLI
 
 #### Azure
+
 Reference: https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest
 brew update && brew install azure-cli
 
 #### AWS
+
 Requires pip install
+
 Reference: https://pip.pypa.io/en/stable/installing/
+
 curl https://bootstrap.pypa.io/get-pip.py | python3
+
 sudo python get-pip.py
 
 Reference: https://aws.amazon.com/cli/
+
 pip install awscli
 
 #### Google
+
 Reference: https://cloud.google.com/sdk/gcloud/
 
 Install Terraform
+
 Reference: https://www.terraform.io/downloads.html
 
 Add .bash_profile environment variable
 
 #### Setting Path for Terraform
+
 PATH="/Users/rbahian/Desktop/Software/Terraform:${PATH}"
+
 export PATH
 
 
 ****
-Connect to cloud providers:
+## Connect to cloud providers:
 
 		terraform init
 
