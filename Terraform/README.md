@@ -132,8 +132,8 @@ export PATH
 	
 	1.	show
 
-		terraform state show <resource_name>
-		Ex: terraform state show google_compute_network.our_development_network
+			terraform state show <resource_name>
+			Ex: terraform state show google_compute_network.our_development_network
 
 1.	Create the diagram for all infrasturcture
 
