@@ -1,0 +1,24 @@
+{
+  "builders": [
+    {
+      "type": "googlecompute",
+      "account_file": "../../account.json",
+      "project_id": "rbahian-ultimate-project",
+      "source_image": "ubuntu-1604-xenial-v20180808",
+      "disk_size": "50",
+      "machine_type": "n1-standard-1",
+      "ssh_username": "root",
+      "zone": "us-east1-b",
+      "image_description": "ForgeRock OpenDJ image",
+      "image_name": "opendj-packer-image"
+    }
+
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "./test.txt",
+      "destination": "/opt/TEST.TXT"
+    }
+  ]
+}

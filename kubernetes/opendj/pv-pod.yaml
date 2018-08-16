@@ -1,0 +1,19 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: userstore-pv-pod
+  namespace: ultids
+spec:
+  volumes:
+    - name: userstore-pv-storage
+      persistentVolumeClaim:
+       claimName: userstore-pv-claim
+  containers:
+    - name: userstore-pv-container
+      image: gcr.io/rbahian-ultimate-project/opendj
+      ports:
+        - containerPort: 1389
+          name: "opendj-user"
+      volumeMounts:
+        - mountPath: "/usr/share/test"
+          name: userstore-pv-storage

@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: openig
+  name: openig
+  namespace: ulti
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: openig-lb
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  - name: openigssl-lb
+    port: 8443
+    protocol: TCP
+    targetPort: 8443
+  - name: openig-app-lb
+    port: 8081
+    protocol: TCP
+    targetPort: 8081
+  - name: openig-appssl-lb
+    port: 8444
+    protocol: TCP
+    targetPort: 8444
+  selector:
+    app: openig
+    tier: ig
+  sessionAffinity: None
+  type: LoadBalancer

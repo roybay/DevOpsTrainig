@@ -1,0 +1,22 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: httpd
+  namespace: ulti
+spec:
+  selector:
+    matchLabels:
+      app: httpd
+  replicas: 1 
+  template: 
+    metadata:
+      namespace: ulti
+      name: httpd
+      labels:
+        app: httpd
+    spec:
+      containers:
+      - name: httpd
+        image: gcr.io/rbahian-ultimate-project/simpleapp
+        ports:
+        - containerPort: 80

@@ -1,0 +1,45 @@
+{
+  "name": "04-pep",
+  "baseURI": "http://35.237.103.255:80",
+  "condition": "${matches(request.uri.path, '^/private.html')}",
+  "monitor": false,
+  "heap": [
+    {
+      "name": "AmService-1",
+      "type": "AmService",
+      "config": {
+        "url": "http://openam.hcmlabs.net:8080/openam",
+        "realm": "/",
+        "ssoTokenHeader": "iPlanetDirectoryPro",
+        "version": "6.0"
+      }
+    }
+  ],
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "name": "SingleSignOnFilter-1",
+          "type": "SingleSignOnFilter",
+          "config": {
+            "amService": "AmService-1"
+          }
+        },
+        {
+          "name": "PolicyEnforcementFilter-1",
+          "type": "PolicyEnforcementFilter",
+          "config": {
+            "pepUsername": "J2EE",
+            "pepPassword": "password",
+            "pepRealm": "/",
+            "application": "PEP policy set",
+            "ssoTokenSubject": "${contexts.ssoToken.value}",
+            "amService": "AmService-1"
+          }
+        }
+      ],
+      "handler": "ReverseProxyHandler"
+    }
+  }
+}

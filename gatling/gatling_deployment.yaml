@@ -1,0 +1,22 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: gatling
+  namespace: ulti
+spec:
+  selector:
+    matchLabels:
+      app: gatling
+  replicas: 1 
+  template: 
+    metadata:
+      namespace: ulti
+      name: gatling
+      labels:
+        app: gatling
+    spec:
+      containers:
+      - name: gatling
+        image: gcr.io/rbahian-ultimate-project/gatling
+        ports:
+        - containerPort: 80
