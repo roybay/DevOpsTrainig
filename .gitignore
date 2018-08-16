@@ -3,6 +3,9 @@
 #Compiled files
 *.tfstate
 *.tfstate.backup
+*.zip
+*.tar
+*.tar.gz
 
 #Module directory
 .terraform/
