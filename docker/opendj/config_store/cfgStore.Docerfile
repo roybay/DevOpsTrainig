@@ -1,0 +1,15 @@
+# Create a Docker image for initialising OpenDJ 6.0.0
+ARG BASE_IMAGE=opendj-base:6.0.0
+
+FROM ${BASE_IMAGE}
+
+#See base.Dockerfile for environment variables
+WORKDIR "${FILE_HOME}"
+
+#COPY setup_functions.sh kubernetes/setup-opendj.sh kubernetes/java.properties createHierarchy.ldif custom-json-logger.json ultiProAdmin.ldif "${FILE_HOME}"/
+
+USER root
+RUN  chown -R "${SERVICE_USER}":"${SERVICE_GROUP}" "${FILE_HOME}"
+
+USER    "${SERVICE_USER}"
+WORKDIR "${FILE_HOME}"
