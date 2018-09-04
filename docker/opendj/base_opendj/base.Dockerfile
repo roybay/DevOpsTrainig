@@ -13,8 +13,10 @@ ARG SERVICE_UID=11111
 ARG FILE_HOME=/opt/bits
 ARG OPENDJ_HOME=/opt/opendj
 ARG OPENDJ_DATA=/opt/opendj-data
-ARG DJ_HOST=localhost
-ARG DJ_ZIP=../bits/DS-6.0.0.zip
+ARG LDAP_PORT="1389"
+ARG LDAPS_PORT="1636"
+ARG ADMIN_PORT="4444"
+ARG DJ_ZIP=./DS-6.0.0.zip
 
 ENV SERVICE_USER=$SERVICE_USER
 ENV SERVICE_GROUP=$SERVICE_GROUP
@@ -22,7 +24,9 @@ ENV SERVICE_UID=$SERVICE_UID
 ENV FILE_HOME=$FILE_HOME
 ENV OPENDJ_HOME=$OPENDJ_HOME
 ENV OPENDJ_DATA=$OPENDJ_DATA
-ENV DJ_HOST=${DJ_HOST}
+ENV LDAP_PORT=$LDAP_PORT
+ENV LDAPS_PORT=$LDAPS_PORT
+ENV ADMIN_PORT=$ADMIN_PORT
 
 WORKDIR "${FILE_HOME}"
 
@@ -31,7 +35,6 @@ RUN apk add --no-cache unzip bash rng-tools curl \
     && unzip -q ./DS.zip -d ../ \
     && rm -fr ./DS.zip \
     && mkdir -p  "${OPENDJ_DATA}" \
-	&& echo "${OPENDJ_DATA}" > "${OPENDJ_HOME}"/instance.loc \
     && if [ "$SERVICE_USER" != "root" ]; then addgroup -g "${SERVICE_UID}" "${SERVICE_GROUP}"; fi \
     && if [ "$SERVICE_USER" != "root" ]; then adduser  -s /bin/bash -h "${OPENDJ_HOME}" -u "${SERVICE_UID}" -D "${SERVICE_USER}" -G "${SERVICE_GROUP}"; fi \
     && if [ "$SERVICE_USER" != "root" ]; then chown    -R "${SERVICE_USER}":"${SERVICE_GROUP}" "${FILE_HOME}" "${OPENDJ_HOME}" "${OPENDJ_DATA}"; fi

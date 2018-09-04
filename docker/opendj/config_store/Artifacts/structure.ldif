@@ -1,0 +1,37 @@
+dn: dc=roylab,dc=com
+objectclass: top
+objectclass: domain
+dc: roylab
+aci: (targetattr="*")(version 3.0;acl "Allow CRUDQ operations";
+ allow (search, read, write, add, delete)
+ (userdn = "ldap:///uid=openam,ou=ServiceAccounts,dc=roylab,dc=com");)
+aci: (targetcontrol="2.16.840.1.113730.3.4.3")(version 3.0;
+ acl "Allow persistent search"; allow (search, read)
+ (userdn = "ldap:///uid=openam,ou=ServiceAccounts,dc=roylab,dc=com");)
+aci: (targetcontrol="1.2.840.113556.1.4.473")(version 3.0;
+ acl "Allow server-side sorting"; allow (read)
+ (userdn = "ldap:///uid=openam,ou=ServiceAccounts,dc=roylab,dc=com");)
+
+dn: dc=openam,dc=roylab,dc=com
+objectclass: top
+objectclass: domain
+dc: openam
+
+dn: ou=ServiceAccounts,dc=roylab,dc=com
+objectclass: top
+objectclass: organizationalUnit
+ou: ServiceAccounts
+
+dn: uid=openam,ou=ServiceAccounts,dc=roylab,dc=com
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: openam admin
+sn: admin
+uid: openam
+userPassword: Password1
+ds-privilege-name: subentry-write
+ds-privilege-name: update-schema
+ds-rlim-size-limit: 0
+ds-rlim-lookthrough-limit: 0
