@@ -2,14 +2,14 @@
   "variables": {
       "account_file": "../../account.json",
       "project_id": "rbahian-ultimate-project",
-      "source_image_family": "ubuntu-1804-lts",
+      "source_image": "opendj-base-image",
       "disk_size": "50",
       "machine_type": "n1-standard-1",
       "ssh_username": "ubuntu",
       "zone": "us-east1-b",
       "image_description": "ForgeRock OpenDJ image",
-      "image_name": "opendj-base-image",
-      "instance_name": "opendj-packer-base"
+      "image_name": "opendj-config-store",
+      "instance_name": "opendj-packer-config-store"
   },
   "builders": [
     {
@@ -17,7 +17,7 @@
       "account_file": "{{ user `account_file` }}",
       "project_id": "{{ user `project_id` }}",
       "name": "{{ user `instance_name`}}",
-      "source_image_family": "{{ user `source_image_family` }}",
+      "source_image": "{{ user `source_image` }}",
       "disk_size": "{{ user `disk_size` }}",
       "machine_type": "{{ user `machine_type` }}",
       "ssh_username": "{{ user `ssh_username` }}",
@@ -33,8 +33,12 @@
   "provisioners": [
     {
       "type": "file",
-      "source": "./DS-6.0.0.zip",
-      "destination": "/opt/DS-6.0.0.zip"
+      "source": "./cfg.zip",
+      "destination": "/home/ubuntu/cfg.zip"
+    },
+    {
+      "type": "shell",
+      "scripts": "./scripts/setup_config_store.sh"
     }
   ]
 }

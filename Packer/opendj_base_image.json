@@ -1,0 +1,44 @@
+{
+  "variables": {
+      "account_file": "../../account.json",
+      "project_id": "rbahian-ultimate-project",
+      "source_image": "ansible-base-image",
+      "disk_size": "50",
+      "machine_type": "n1-standard-1",
+      "ssh_username": "ubuntu",
+      "zone": "us-east1-b",
+      "image_description": "ForgeRock OpenDJ image",
+      "image_name": "opendj-base-image",
+      "instance_name": "opendj-packer-base"
+  },
+  "builders": [
+    {
+      "type": "googlecompute",
+      "account_file": "{{ user `account_file` }}",
+      "project_id": "{{ user `project_id` }}",
+      "name": "{{ user `instance_name`}}",
+      "source_image": "{{ user `source_image` }}",
+      "disk_size": "{{ user `disk_size` }}",
+      "machine_type": "{{ user `machine_type` }}",
+      "ssh_username": "{{ user `ssh_username` }}",
+      "zone": "{{ user `zone` }}",
+      "image_description": "{{ user `image_description` }}",
+      "image_name": "{{ user `image_name` }}",
+      "instance_name": "{{ user `instance_name` }}",
+      "metadata": {
+        "enable-oslogin": "TRUE"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "./DS-6.0.0.zip",
+      "destination": "/home/ubuntu/DS-6.0.0.zip"
+    },
+    {
+      "type": "shell",
+      "scripts": "./scripts/opendj_base.sh"
+    }
+  ]
+}

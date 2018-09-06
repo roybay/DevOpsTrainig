@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#. ./setup_functions_spade.sh
+. ./setup_functions_varuables.sh
 
 #set hostname
 set_hostname(){
@@ -136,8 +136,8 @@ restart_opendj(){
 }
 
 setup_ds_config_store() {
- # set_common_variables
- # set_ds_config_store_variables
+  set_common_variables
+  set_ds_config_store_variables
   set_hostname
   opendj_init
   set_backend_prop
