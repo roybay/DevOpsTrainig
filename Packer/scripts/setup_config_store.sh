@@ -14,6 +14,7 @@ FILE_HOME=/opt/bits
 cd ${FILE_HOME}
 sudo apt-get update 
 sudo unzip /home/ubuntu/${ZIP_FILE}
+sudo chmod 744 -R ${FILE_HOME}
 sudo chown ${SERVICE_USER}:${SERVICE_GROUP} -R ${FILE_HOME}
 #sudo rm /home/ubuntu/${ZIP_FILE}
 
