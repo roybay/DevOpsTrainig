@@ -4,7 +4,7 @@ metadata:
   labels:
     app: openig
   name: openig
-  namespace: ulti
+  namespace: mynamespace
 spec:
   externalTrafficPolicy: Cluster
   ports:
