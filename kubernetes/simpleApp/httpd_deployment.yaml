@@ -2,7 +2,7 @@ apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: httpd
-  namespace: ulti
+  namespace: mynamespace
 spec:
   selector:
     matchLabels:
