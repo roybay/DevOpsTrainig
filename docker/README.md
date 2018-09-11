@@ -25,13 +25,13 @@ Local docker image need to have required name convension before pushing to googl
 Build local image with: 
 
 		docker build --tag [HOSTNAME]/[PROJECT-ID]/[IMAGE] .
-		Ex: docker build --tag gcr.io/rbahian-ultimate-project/openig .
+		Ex: docker build --tag gcr.io/myproject/openig .
 
 Tag the loacl image if it has already been built
 
 		docker tag [HOSTNAME]/[PROJECT-ID]/[IMAGE]
-		Ex: docker tag gcr.io/rbahian-ultimate-project/openig
+		Ex: docker tag gcr.io/myproject/openig
 
 Push the image to GCP container Registry 
 
-		docker push gcr.io/rbahian-ultimate-project/openig
+		docker push gcr.io/myproject/openig
