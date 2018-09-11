@@ -12,7 +12,7 @@ get_root_suffix() {
 	--hostname "${HOSTNAME}" \
 	--port "${LDAP_PORT}" \
 	--bindDN "${ROOT_USER_DN}" \
-	--bindPassword "${ROOT_USER_PASSWORD}" \
+	--bindPasswordFile "${ROOT_USER_FILE}" \
 	--baseDn "ds-cfg-backend-id=userRoot,cn=Backends,cn=config" \
 	--searchScope base objectclass=top ds-cfg-base-dn
 }
@@ -23,7 +23,7 @@ get_config_data() {
 	--hostname "${HOSTNAME}" \
 	--port "${LDAP_PORT}" \
 	--bindDN "${ROOT_USER_DN}" \
-	--bindPassword "${ROOT_USER_PASSWORD}" \
+	--bindPasswordFile "${ROOT_USER_FILE}" \
 	--baseDn "dc=openam,dc=ulti,dc=io" \
 	--searchScope base objectclass=top
 }
@@ -34,7 +34,7 @@ get_openam_access() {
 	--hostname "${HOSTNAME}" \
 	--port "${LDAP_PORT}" \
 	--bindDN "${ROOT_USER_DN}" \
-	--bindPassword "${ROOT_USER_PASSWORD}" \
+	--bindPasswordFile "${ROOT_USER_FILE}" \
 	--baseDn "dc=ulti,dc=io" \
 	--searchScope base objectclass=top aci | grep uid=openam
 }
@@ -45,7 +45,7 @@ get_serviceaccounts_suffix() {
 	--hostname "${HOSTNAME}" \
 	--port "${LDAP_PORT}" \
 	--bindDN "${ROOT_USER_DN}" \
-	--bindPassword "${ROOT_USER_PASSWORD}" \
+	--bindPasswordFile "${ROOT_USER_FILE}" \
 	--baseDn "ou=ServiceAccounts,dc=ulti,dc=io" \
 	--searchScope base objectclass=top dn
 }
@@ -56,9 +56,20 @@ get_openam_privileges() {
 	--hostname "${HOSTNAME}" \
 	--port "${LDAP_PORT}" \
 	--bindDN "${ROOT_USER_DN}" \
-	--bindPassword "${ROOT_USER_PASSWORD}" \
+	--bindPasswordFile "${ROOT_USER_FILE}" \
 	--baseDn "uid=openam,ou=ServiceAccounts,dc=ulti,dc=io" \
 	--searchScope base objectclass=top ds-privilege-name ds-rlim-size-limit ds-rlim-lookthrough-limit
+}
+
+#CTS schema
+get_cts_schema() {
+	"${OPENDJ_HOME}"/bin/ldapsearch \
+	--hostname "${HOSTNAME}" \
+	--port "${LDAP_PORT}" \
+	--bindDN "${ROOT_USER_DN}" \
+	--bindPasswordFile "${ROOT_USER_FILE}" \
+	--baseDn "cn=schema" \
+	--searchScope base objectclass=top objectclasses | grep -e "1.3.6.1.4.1.36733.2.2.2.27"
 }
 
 #Config schema
@@ -67,7 +78,7 @@ get_config_schema() {
 	--hostname "${HOSTNAME}" \
 	--port "${LDAP_PORT}" \
 	--bindDN "${ROOT_USER_DN}" \
-	--bindPassword "${ROOT_USER_PASSWORD}" \
+	--bindPasswordFile "${ROOT_USER_FILE}" \
 	--baseDn "cn=schema" \
 	--searchScope base objectclass=top objectclasses | grep -e "1.3.6.1.4.1.42.2.27.9.2.25" -e "1.3.6.1.4.1.42.2.27.9.2.104" -e "1.3.6.1.4.1.42.2.27.9.2.27"
 }
@@ -78,7 +89,7 @@ get_modify_schema() {
 	--hostname "${HOSTNAME}" \
 	--port "${LDAP_PORT}" \
 	--bindDN "${ROOT_USER_DN}" \
-	--bindPassword "${ROOT_USER_PASSWORD}" \
+	--bindPasswordFile "${ROOT_USER_FILE}" \
 	--baseDn "cn=Access Control Handler,cn=config" objectclass=top | grep cn=schema | grep uid=openam
 }
 
@@ -88,7 +99,7 @@ get_https_connection_port() {
 	--hostname "${HOSTNAME}" \
 	--port "${LDAP_PORT}" \
 	--bindDN "${ROOT_USER_DN}" \
-	--bindPassword "${ROOT_USER_PASSWORD}" \
+	--bindPasswordFile "${ROOT_USER_FILE}" \
 	--baseDn " cn=HTTPS,cn=connection handlers,cn=config" objectclass=top ds-cfg-enabled
 }
 
@@ -98,7 +109,7 @@ get_cache_size() {
 	--hostname "${HOSTNAME}" \
 	--port "${LDAP_PORT}" \
 	--bindDN "${ROOT_USER_DN}" \
-	--bindPassword "${ROOT_USER_PASSWORD}" \
+	--bindPasswordFile "${ROOT_USER_FILE}" \
 	--baseDn "ds-cfg-backend-id=userRoot,cn=Backends,cn=config" \
 	--searchScope base objectclass=top ds-cfg-db-cache-percent
 }
@@ -109,8 +120,22 @@ get_anonymous_access() {
 	--hostname "${HOSTNAME}" \
 	--port "${LDAP_PORT}" \
 	--bindDN "${ROOT_USER_DN}" \
-	--bindPassword "${ROOT_USER_PASSWORD}" \
+	--bindPasswordFile "${ROOT_USER_FILE}" \
 	--baseDn "cn=Access Control Handler,cn=config" objectclass=top | grep -i anyone
+}
+
+get_virtual_attribute(){
+	VIRTUAL_ATTRIBUTE=$1
+
+	"${OPENDJ_HOME}"/bin/dsconfig \
+	get-virtual-attribute-prop  \
+	--hostname "${HOSTNAME}" \
+	--port "${ADMIN_PORT}" \
+	--bindDN "${ROOT_USER_DN}" \
+	--bindPasswordFile "${ROOT_USER_FILE}" \
+	--name="${VIRTUAL_ATTRIBUTE}" \
+ 	--trustAll \
+	--no-prompt | grep "enabled"
 }
 
 
@@ -199,6 +224,21 @@ ds-rlim-lookthrough-limit: 0"
 	fi
 }
 
+test_cts_schema(){
+	CURRENT_VALUE=$(get_cts_schema)
+	EXPECTED_VALUE="objectclasses: ( 1.3.6.1.4.1.36733.2.2.2.27 NAME 'frCoreToken' DESC 'object containing ForgeRock Core Token' SUP top STRUCTURAL MUST ( coreTokenId $ coreTokenType ) MAY ( coreTokenExpirationDate $ coreTokenUserId $ coreTokenObject $ coreTokenString01 $ coreTokenString02 $ coreTokenString03 $ coreTokenString04 $ coreTokenString05 $ coreTokenString06 $ coreTokenString07 $ coreTokenString08 $ coreTokenString09 $ coreTokenString10 $ coreTokenString11 $ coreTokenString12 $ coreTokenString13 $ coreTokenString14 $ coreTokenString15 $ coreTokenInteger01 $ coreTokenInteger02 $ coreTokenInteger03 $ coreTokenInteger04 $ coreTokenInteger05 $ coreTokenInteger06 $ coreTokenInteger07 $ coreTokenInteger08 $ coreTokenInteger09 $ coreTokenInteger10 $ coreTokenDate01 $ coreTokenDate02 $ coreTokenDate03 $ coreTokenDate04 $ coreTokenDate05 $ coreTokenMultiString01 $ coreTokenMultiString02 $ coreTokenMultiString03 ) X-ORIGIN 'ForgeRock OpenAM CTSv2' X-SCHEMA-FILE '99-user.ldif' )"
+	 
+	if [[ "$CURRENT_VALUE" == "$EXPECTED_VALUE" ]]
+	then
+		printf "CTS schema has been applied ${GREEN}Successfully! ${NC}as expected\n"
+	else
+		printf "CTS schema has been ${RED}FAILED! ${NC} NOT expected\n"
+		printf "Current value is/are:\n$CURRENT_VALUE\n\n"
+		printf "Expected value is/are:\n$EXPECTED_VALUE\n" 
+		exit 1
+	fi
+}
+
 test_config_schema(){
 	CURRENT_VALUE=$(get_config_schema)
 	EXPECTED_VALUE="objectclasses: ( 1.3.6.1.4.1.42.2.27.9.2.25 NAME 'sunservice' DESC 'object containing service information' SUP top STRUCTURAL MUST ou MAY ( labeledURI $ sunServiceSchema $ sunKeyValue $ sunxmlKeyValue $ sunPluginSchema $ description ) X-ORIGIN 'Sun Java System Identity Management' X-SCHEMA-FILE '99-user.ldif' )
@@ -216,6 +256,7 @@ objectclasses: ( 1.3.6.1.4.1.42.2.27.9.2.27 NAME 'sunservicecomponent' DESC 'Sub
 	fi
 }
 
+
 test_modify_schema(){
 	CURRENT_VALUE=$(get_modify_schema)
 	EXPECTED_VALUE='ds-cfg-global-aci: (target = "ldap:///cn=schema")(targetattr = "attributeTypes || objectClasses")(version 3.0; acl "Modify schema"; allow (write) (userdn = "ldap:///uid=openam,ou=ServiceAccounts,dc=ulti,dc=io");)'
@@ -231,9 +272,9 @@ test_modify_schema(){
 	fi
 }
 
-test_http_connection(){
+test_https_connection(){
 	CURRENT_VALUE=$(get_https_connection)
-	EXPECTED_VALUE="test_http_connection"
+	EXPECTED_VALUE="test_https_connection"
 	 
 	if [[ "$CURRENT_VALUE" == "$EXPECTED_VALUE" ]]
 	then
@@ -280,8 +321,24 @@ ds-cfg-db-cache-percent: 70"
 	fi
 }
 
+test_virtual_attributes(){
+	EXPECTED_VALUE="enabled        : false"
+	VIRTUAL_ATTRIBUTES=("Collective Attribute Subentries" "entryDN" "entryUUID" "governingStructureRule" "hasSubordinates" "isMemberOf" "numSubordinates" "Password Expiration Time" "Password Policy Subentry" "structuralObjectClass" "subschemaSubentry")
 
-
+	for NAME in $(seq 0 $((${#VIRTUAL_ATTRIBUTES[*]} - 1)))
+	do
+		CURRENT_VALUE=$(get_virtual_attribute "${VIRTUAL_ATTRIBUTES[$NAME]}" )
+		if [[ "$CURRENT_VALUE" == "$EXPECTED_VALUE" ]]
+		then
+			printf "${VIRTUAL_ATTRIBUTES[$NAME]} has been disabled ${GREEN}Successfully! ${NC}as expected\n"
+		else
+			printf "${VIRTUAL_ATTRIBUTES[$NAME]} has been ${RED}FAILED! ${NC} NOT expected\n"
+			printf "Current value is/are:\n$CURRENT_VALUE\n\n"
+			printf "Expected value is/are:\n$EXPECTED_VALUE\n" 
+			exit 1
+		fi
+	done
+}
 
 test_ds_config_store(){
 	set_common_variables
@@ -293,7 +350,25 @@ test_ds_config_store(){
 	test_openam_privileges
 	test_config_schema
 	test_modify_schema
-	#test_http_connection
-	test_anonymous_access
+	#test_https_connection
+	## This test will fail because http connection handler is not evet configured. That function works only if it is configured and set it to disable.
+	test_anonymous_access # NEED TO BE VERIFIED!!!
 	test_cache_size
+}
+
+test_ds_cts_store(){
+	set_common_variables
+  	set_ds_cts_store_variables
+ 	test_root_suffix
+	test_config_data
+	test_openam_access
+	test_serviceaccounts_suffix
+	test_openam_privileges
+	test_cts_schema
+	test_modify_schema
+	#test_https_connection
+	## This test will fail because http connection handler is not evet configured. That function works only if it is configured and set it to disable.
+	test_anonymous_access # NEED TO BE VERIFIED!!!
+	test_cache_size
+	test_virtual_attributes
 }

@@ -21,6 +21,7 @@ sudo unzip /home/ubuntu/${OPENDJ_ZIP}
 sudo rm /home/ubuntu/${OPENDJ_ZIP}
 sudo chown ${SERVICE_USER}:${SERVICE_GROUP} -R ${SERVICE_USER}
 sudo chown ${SERVICE_USER}:${SERVICE_GROUP} -R ${FILE_HOME}
+sudo apt-get install -y openjdk-8-jre-headless
 sudo apt-get update
 
 echo "OpenDJ ready to configure!"

@@ -15,12 +15,11 @@ base_packer_build(){
 }
 
 cfg_store_packer_build(){
-	mkdir -p cfg
-	cp -r ../docker/opendj/config_store/Artifacts ./cfg/
-	cp -r ../docker/opendj/scripts ./cfg/.
-	zip -r cfg.zip ./cfg
+	cp -r ../docker/opendj/config_store/Artifacts .
+	cp -r ../docker/opendj/scripts/* ./Artifacts/.
+	zip -r Artifacts.zip ./Artifacts
 	packer build -force ${CFG_STORE}
-	rm -rf cfg cfg.zip
+	rm -rf Artifacts Artifacts.zip
 }
 
 #ansible_packer_build
