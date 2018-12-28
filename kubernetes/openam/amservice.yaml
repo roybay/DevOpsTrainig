@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: openam
+  namespace: ulti
+  labels:
+    app: openam
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: tomcat
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  - name: ldap
+    port: 1389
+    protocol: TCP
+    targetPort: 1389
+  - name: ldaps
+    port: 1689
+    protocol: TCP
+    targetPort: 1689
+  - name: dsadmin
+    port: 4444
+    protocol: TCP
+    targetPort: 4444
+  - name: replication
+    port: 8989
+    protocol: TCP
+    targetPort: 8989
+  selector:
+    app: openam
+    tier: am
+  sessionAffinity: None
+  type: LoadBalancer

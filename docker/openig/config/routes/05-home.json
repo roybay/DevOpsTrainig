@@ -1,0 +1,34 @@
+{
+  "heap": [
+    {
+      "name": "ReverseProxyHandler",
+      "type": "ReverseProxyHandler",
+      "comment": "Testing only: blindly trust the server cert for HTTPS.",
+      "config": {
+        "trustManager": {
+          "type": "TrustAllManager"
+        },
+        "hostnameVerifier": "ALLOW_ALL"
+      }
+    }
+  ],
+  "handler": {
+    "type": "Chain",
+    "config": {
+      "filters": [
+        {
+          "type": "PasswordReplayFilter",
+          "config": {
+            "loginPage": "${request.uri.path == '/home'}",
+            "request": {
+              "method": "GET",
+              "uri": "https://35.237.103.255:8444/home"
+            }
+          }
+        }
+      ],
+      "handler": "ReverseProxyHandler"
+    }
+  },
+   "condition": "${matches(request.uri.path, '^/home')}"
+}

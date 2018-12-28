@@ -1,0 +1,12 @@
+{
+  "name": "hello",
+  "handler": {
+    "type": "StaticResponseHandler",
+    "config": {
+      "status": 200,
+      "reason": "OK",
+      "entity": "Hello, world!"
+    }
+  },
+  "condition": "${matches(request.uri.path, '^/hello')}"
+}

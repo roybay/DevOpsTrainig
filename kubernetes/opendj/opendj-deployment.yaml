@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opendj-userstore
+  namespace: ulti
+  labels:
+    app: opendj
+spec:
+  selector:
+    matchLabels:
+      app: opendj
+      tier: userstore
+  replicas: 1
+  template:
+    metadata:
+      name: userstore-pv-pod
+      namespace: ulti
+      labels:
+        app: opendj
+        tier: userstore
+    spec:
+      affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: failure-domain.beta.kubernetes.io/zone
+                  operator: In
+                  values:
+                  - us-east1-b
+      containers:
+      - image: gcr.io/rbahian-ultimate-project/opendj
+        name: userstore-pv-container
+        ports:
+          - containerPort: 1389
+        volumeMounts:
+        - mountPath: "/opt/opendj/data"
+          name: userstore-pv-storage
+      volumes:
+      - name: userstore-pv-storage
+        persistentVolumeClaim:
+          claimName: userstore-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opendj-userstore
+  namespace: ulti
+  labels:
+    app: opendj
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - nodePort: 30904
+    port: 1389
+    protocol: TCP
+    targetPort: 1389
+  selector:
+    app: opendj
+    tier: userstore
+  sessionAffinity: None
+  type: LoadBalancer

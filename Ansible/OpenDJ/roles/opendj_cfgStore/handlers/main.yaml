@@ -1,0 +1,4 @@
+- name: Restart OpenDJ instance 
+  service: 
+    name: opendj
+    state: restarted

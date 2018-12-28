@@ -1,0 +1,13 @@
+{
+  "name": "public",
+  "handler": {
+     "name": "public",
+     "type": "ClientHandler",
+     "config": {
+           "proxy" : {
+              "uri": "http://35.237.103.255:80/public.html"
+           }
+     }
+   },
+   "condition": "${matches(request.uri.path, '^/public.html')}"
+}

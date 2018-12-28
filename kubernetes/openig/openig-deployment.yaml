@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openig
+  namespace: ulti
+  labels:
+    app: openig
+spec:
+  selector:
+    matchLabels:
+      app: openig
+      tier: ig
+  replicas: 1
+  template:
+    metadata:
+      name: openig-pod
+      namespace: ulti
+      labels:
+        app: openig
+        tier: ig
+    spec:
+      containers:
+      - image: gcr.io/rbahian-ultimate-project/openig
+        name: openig-container
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
+          requests:
+            cpu: 200m
+            memory: 512Mi
+        ports:
+          - containerPort: 8080

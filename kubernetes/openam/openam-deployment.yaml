@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openam
+  namespace: ulti
+  labels:
+    app: openam
+spec:
+  selector:
+    matchLabels:
+      app: openam
+      tier: am
+  replicas: 1
+  template:
+    metadata:
+      name: openam-pod
+      namespace: ulti
+      labels:
+        app: openam
+        tier: am
+    spec:
+      containers:
+      - image: gcr.io/rbahian-ultimate-project/openam
+        name: openam-container
+        ports:
+          - containerPort: 8080

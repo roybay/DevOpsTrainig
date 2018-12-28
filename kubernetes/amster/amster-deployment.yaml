@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amster
+  namespace: ulti
+  labels:
+    app: amster
+spec:
+  selector:
+    matchLabels:
+      app: amster
+      tier: amster
+  replicas: 2
+  template:
+    metadata:
+      name: amster-pv-pod
+      namespace: ulti
+      labels:
+        app: amster
+        tier: amster
+    spec:
+      containers:
+      - image: gcr.io/rbahian-ultimate-project/amster
+        name: amster-container
+        ports:
+          - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: amster
+  namespace: ulti
+  labels:
+    app: amster
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: amster-lb
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: amster
+    tier: amster
+  sessionAffinity: None
+  type: LoadBalancer
