@@ -17,7 +17,9 @@ cd ../ingress
 
 cd ../echo_server 
 
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./echo-tls.key -out ./echo-tls.crt -subj "/CN=echo.roylab.com"
-kubectl create secret tls echo-cert --cert=./echo-tls.crt --key=./echo-tls.key -n echo
+if [ ! -f echo-tls.key ] ; then
+	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./echo-tls.key -out ./echo-tls.crt -subj "/CN=echo.roylab.com"
+	kubectl create secret tls echo-cert --cert=./echo-tls.crt --key=./echo-tls.key -n echo
+fi
 
 kubectl apply -f echo-ingress-sticky-ssl.yaml
