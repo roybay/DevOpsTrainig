@@ -1,0 +1,20 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: hw-deployment
+  namespace: hw
+spec:
+  selector:
+    matchLabels:
+      app: helloworld
+  replicas: 2 
+  template: 
+    metadata:
+      labels:
+        app: helloworld
+    spec:
+      containers:
+      - name: helloworld
+        image: karthequian/helloworld:latest
+        ports:
+        - containerPort: 80
