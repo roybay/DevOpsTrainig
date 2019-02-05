@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hw-ingress
+  labels:
+    run: hw-ingress
+  namespace: hw
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: "/"
+spec:
+  tls:
+  - hosts:
+    - hw.roylab.com
+  rules:
+  - host: hw.roylab.com
+    http:
+      paths:
+      - path: /hw
+        backend:
+          serviceName: hw-service
+          servicePort: 80
+      rules:
