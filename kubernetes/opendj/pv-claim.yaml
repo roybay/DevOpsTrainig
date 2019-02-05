@@ -2,7 +2,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: userstore-pv-claim
-  namespace: ultids
+  namespace: roylab
 spec:
   storageClassName: manual
   accessModes:

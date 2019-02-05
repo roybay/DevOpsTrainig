@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: openig
-  namespace: ulti
+  namespace: roylab
   labels:
     app: openig
 spec:
@@ -14,13 +14,13 @@ spec:
   template:
     metadata:
       name: openig-pod
-      namespace: ulti
+      namespace: roylab
       labels:
         app: openig
         tier: ig
     spec:
       containers:
-      - image: gcr.io/rbahian-ultimate-project/openig
+      - image: gcr.io/rbahian-project/openig
         name: openig-container
         resources:
           limits:

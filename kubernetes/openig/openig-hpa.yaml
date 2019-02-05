@@ -2,7 +2,7 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: openig
-  namespace: mynamespace
+  namespace: roylab
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

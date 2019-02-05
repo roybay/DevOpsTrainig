@@ -6,7 +6,7 @@ RED='\033[1;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
-#Root suffix is dc=ulti,dc=io
+#Root suffix is dc=example,dc=com
 get_root_suffix() {
 	"${OPENDJ_HOME}"/bin/ldapsearch \
 	--hostname "${HOSTNAME}" \
@@ -17,14 +17,14 @@ get_root_suffix() {
 	--searchScope base objectclass=top ds-cfg-base-dn
 }
 
-#Config data dc=openam,dc=ulti,dc=io
+#Config data dc=openam,dc=example,dc=com
 get_config_data() {
 	"${OPENDJ_HOME}"/bin/ldapsearch \
 	--hostname "${HOSTNAME}" \
 	--port "${LDAP_PORT}" \
 	--bindDN "${ROOT_USER_DN}" \
 	--bindPasswordFile "${ROOT_USER_FILE}" \
-	--baseDn "dc=openam,dc=ulti,dc=io" \
+	--baseDn "dc=openam,dc=example,dc=com" \
 	--searchScope base objectclass=top
 }
 
@@ -35,7 +35,7 @@ get_openam_access() {
 	--port "${LDAP_PORT}" \
 	--bindDN "${ROOT_USER_DN}" \
 	--bindPasswordFile "${ROOT_USER_FILE}" \
-	--baseDn "dc=ulti,dc=io" \
+	--baseDn "dc=example,dc=com" \
 	--searchScope base objectclass=top aci | grep uid=openam
 }
 
@@ -46,7 +46,7 @@ get_serviceaccounts_suffix() {
 	--port "${LDAP_PORT}" \
 	--bindDN "${ROOT_USER_DN}" \
 	--bindPasswordFile "${ROOT_USER_FILE}" \
-	--baseDn "ou=ServiceAccounts,dc=ulti,dc=io" \
+	--baseDn "ou=ServiceAccounts,dc=example,dc=com" \
 	--searchScope base objectclass=top dn
 }
 
@@ -57,7 +57,7 @@ get_openam_privileges() {
 	--port "${LDAP_PORT}" \
 	--bindDN "${ROOT_USER_DN}" \
 	--bindPasswordFile "${ROOT_USER_FILE}" \
-	--baseDn "uid=openam,ou=ServiceAccounts,dc=ulti,dc=io" \
+	--baseDn "uid=openam,ou=ServiceAccounts,dc=example,dc=com" \
 	--searchScope base objectclass=top ds-privilege-name ds-rlim-size-limit ds-rlim-lookthrough-limit
 }
 
@@ -142,7 +142,7 @@ get_virtual_attribute(){
 test_root_suffix(){
 	CURRENT_VALUE=$(get_root_suffix)
 	EXPECTED_VALUE="dn: ds-cfg-backend-id=userRoot,cn=Backends,cn=config
-ds-cfg-base-dn: dc=ulti,dc=io"
+ds-cfg-base-dn: dc=example,dc=com"
 
 	if [[ "$CURRENT_VALUE" == "$EXPECTED_VALUE" ]]
 	then
@@ -157,7 +157,7 @@ ds-cfg-base-dn: dc=ulti,dc=io"
 
 test_config_data(){
 	CURRENT_VALUE=$(get_config_data)
-	EXPECTED_VALUE="dn: dc=openam,dc=ulti,dc=io
+	EXPECTED_VALUE="dn: dc=openam,dc=example,dc=com
 objectClass: top
 objectClass: domain
 dc: openam"
@@ -175,9 +175,9 @@ dc: openam"
 
 test_openam_access(){
 	CURRENT_VALUE=$(get_openam_access)
-	EXPECTED_VALUE='aci: (targetattr="*")(version 3.0;acl "Allow CRUDQ operations";allow (search, read, write, add, delete)(userdn = "ldap:///uid=openam,ou=ServiceAccounts,dc=ulti,dc=io");)
-aci: (targetcontrol="2.16.840.1.113730.3.4.3")(version 3.0;acl "Allow persistent search"; allow (search, read)(userdn = "ldap:///uid=openam,ou=ServiceAccounts,dc=ulti,dc=io");)
-aci: (targetcontrol="1.2.840.113556.1.4.473")(version 3.0;acl "Allow server-side sorting"; allow (read)(userdn = "ldap:///uid=openam,ou=ServiceAccounts,dc=ulti,dc=io");)'
+	EXPECTED_VALUE='aci: (targetattr="*")(version 3.0;acl "Allow CRUDQ operations";allow (search, read, write, add, delete)(userdn = "ldap:///uid=openam,ou=ServiceAccounts,dc=example,dc=com");)
+aci: (targetcontrol="2.16.840.1.113730.3.4.3")(version 3.0;acl "Allow persistent search"; allow (search, read)(userdn = "ldap:///uid=openam,ou=ServiceAccounts,dc=example,dc=com");)
+aci: (targetcontrol="1.2.840.113556.1.4.473")(version 3.0;acl "Allow server-side sorting"; allow (read)(userdn = "ldap:///uid=openam,ou=ServiceAccounts,dc=example,dc=com");)'
 	
 	if [[ "$CURRENT_VALUE" == "$EXPECTED_VALUE" ]]
 	then
@@ -192,7 +192,7 @@ aci: (targetcontrol="1.2.840.113556.1.4.473")(version 3.0;acl "Allow server-side
 
 test_serviceaccounts_suffix(){
 	CURRENT_VALUE=$(get_serviceaccounts_suffix)
-	EXPECTED_VALUE="dn: ou=ServiceAccounts,dc=ulti,dc=io"
+	EXPECTED_VALUE="dn: ou=ServiceAccounts,dc=example,dc=com"
 	 
 	if [[ "$CURRENT_VALUE" == "$EXPECTED_VALUE" ]]
 	then
@@ -207,7 +207,7 @@ test_serviceaccounts_suffix(){
 
 test_openam_privileges(){
 	CURRENT_VALUE=$(get_openam_privileges)
-	EXPECTED_VALUE="dn: uid=openam,ou=ServiceAccounts,dc=ulti,dc=io
+	EXPECTED_VALUE="dn: uid=openam,ou=ServiceAccounts,dc=example,dc=com
 ds-privilege-name: subentry-write
 ds-privilege-name: update-schema
 ds-rlim-size-limit: 0
@@ -259,7 +259,7 @@ objectclasses: ( 1.3.6.1.4.1.42.2.27.9.2.27 NAME 'sunservicecomponent' DESC 'Sub
 
 test_modify_schema(){
 	CURRENT_VALUE=$(get_modify_schema)
-	EXPECTED_VALUE='ds-cfg-global-aci: (target = "ldap:///cn=schema")(targetattr = "attributeTypes || objectClasses")(version 3.0; acl "Modify schema"; allow (write) (userdn = "ldap:///uid=openam,ou=ServiceAccounts,dc=ulti,dc=io");)'
+	EXPECTED_VALUE='ds-cfg-global-aci: (target = "ldap:///cn=schema")(targetattr = "attributeTypes || objectClasses")(version 3.0; acl "Modify schema"; allow (write) (userdn = "ldap:///uid=openam,ou=ServiceAccounts,dc=example,dc=com");)'
 	 
 	if [[ "$CURRENT_VALUE" == "$EXPECTED_VALUE" ]]
 	then

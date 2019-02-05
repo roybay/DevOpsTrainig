@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: openam
-  namespace: ulti
+  namespace: roylab
   labels:
     app: openam
 spec:
@@ -14,13 +14,13 @@ spec:
   template:
     metadata:
       name: openam-pod
-      namespace: ulti
+      namespace: roylab
       labels:
         app: openam
         tier: am
     spec:
       containers:
-      - image: gcr.io/rbahian-ultimate-project/openam
+      - image: gcr.io/rbahian-project/openam
         name: openam-container
         ports:
           - containerPort: 8080

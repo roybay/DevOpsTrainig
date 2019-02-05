@@ -2,7 +2,7 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: userstore-pv-volume
-  namespace: ultids
+  namespace: roylab
   labels:
     type: local
 spec:

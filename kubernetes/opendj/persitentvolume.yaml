@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: userprofiledata
-  namespace: ultids
+  namespace: roylab
 spec:
   restartPolicy: Never
   volumes:

@@ -46,7 +46,7 @@ set_backend_prop(){
 add_global_aci(){
   "${OPENDJ_HOME}"/bin/dsconfig \
   set-access-control-handler-prop  \
-  --add global-aci:'(target = "ldap:///cn=schema")(targetattr = "attributeTypes || objectClasses")(version 3.0; acl "Modify schema"; allow (write) (userdn = "ldap:///uid=openam,ou=ServiceAccounts,dc=ulti,dc=io");)' \
+  --add global-aci:'(target = "ldap:///cn=schema")(targetattr = "attributeTypes || objectClasses")(version 3.0; acl "Modify schema"; allow (write) (userdn = "ldap:///uid=openam,ou=ServiceAccounts,dc=example,dc=com");)' \
   --hostname "${DJ_HOST}" \
   --port "${ADMIN_PORT}" \
   --bindDN "${ROOT_USER_DN}" \

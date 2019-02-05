@@ -2,7 +2,7 @@ kind: Pod
 apiVersion: v1
 metadata:
   name: userstore-pv-pod
-  namespace: ultids
+  namespace: roylab
 spec:
   volumes:
     - name: userstore-pv-storage

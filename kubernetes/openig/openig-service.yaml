@@ -4,7 +4,7 @@ metadata:
   labels:
     app: openig
   name: openig
-  namespace: mynamespace
+  namespace: roylab
 spec:
   externalTrafficPolicy: Cluster
   ports:

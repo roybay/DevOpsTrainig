@@ -2,7 +2,7 @@ apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: httpd
-  namespace: mynamespace
+  namespace: roylab
 spec:
   selector:
     matchLabels:
@@ -10,13 +10,13 @@ spec:
   replicas: 1 
   template: 
     metadata:
-      namespace: ulti
+      namespace: roylab
       name: httpd
       labels:
         app: httpd
     spec:
       containers:
       - name: httpd
-        image: gcr.io/rbahian-ultimate-project/simpleapp
+        image: gcr.io/rbahian-project/simpleapp
         ports:
         - containerPort: 80
