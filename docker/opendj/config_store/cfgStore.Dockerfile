@@ -11,7 +11,7 @@ ARG DB_CACHE_PERCENT="70"
 ARG BASE_DN="dc=roylab,dc=com"
 ARG ROOT_USER_DN="cn=Directory Manager"
 ARG ROOT_USER_PASSWORD_FILE="${FILE_HOME}"/Artifacts/.pw_root_user
-ARG ADMIN_USER="UltiProAdmin"
+ARG ADMIN_USER="AdminUser"
 ARG ADMIN_PASSWORD_FILE="${FILE_HOME}"/Artifacts/.pw_admin_user
 ARG MONITOR_USER_DN="uid=Monitor"
 ARG MONITOR_USER_PASSWORD_FILE="${FILE_HOME}"/Artifacts/.pw_monitor_user
@@ -39,7 +39,7 @@ RUN echo "Password2" >> $MONITOR_USER_PASSWORD_FILE
 RUN chmod 400 -R "${FILE_HOME}"/Artifacts/.pw*
 
 COPY Artifacts/structure.ldif Artifacts/opendj_config_schema.ldif "${FILE_HOME}"/Artifacts/
-COPY scripts/setup_functions.sh Artifacts/setup_opendj.sh "${FILE_HOME}"/
+COPY scripts/setup_functions.sh scripts/setup_functions_variables.sh Artifacts/setup_opendj.sh "${FILE_HOME}"/
 
 USER root
 RUN  chown -R "${SERVICE_USER}":"${SERVICE_GROUP}" "${FILE_HOME}"

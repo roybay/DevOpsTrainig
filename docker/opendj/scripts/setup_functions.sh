@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. ./setup_functions_varuables.sh
+. ./setup_functions_variables.sh
 
 #set hostname
 set_hostname(){

@@ -26,3 +26,15 @@ docker_cfg_store_image(){
 	docker_push opendj_cfg_store:6.0.0
 	docker_logout
 }
+
+docker_cts_store_image(){
+	docker_login
+	docker_push opendj_cts_store:6.0.0
+	docker_logout
+}
+
+docker_usr_store_image(){
+	docker_login
+	docker_push opendj_usr_store:6.0.0
+	docker_logout
+}

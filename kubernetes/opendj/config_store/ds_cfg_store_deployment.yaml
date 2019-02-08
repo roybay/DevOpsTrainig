@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opendj-cfg-store
+  namespace: molpis
+  labels:
+    app: opendj
+    tier: cfg-store
+spec:
+  selector:
+    matchLabels:
+      app: opendj
+      tier: cfg-store
+  replicas: 1
+  template:
+    metadata:
+      name: cfg-store-pv-pod
+      namespace: molpis
+      labels:
+        app: opendj
+        tier: cfg-store
+    spec:
+      containers:
+      - image: molpis/oprndj_cfg_store:6.0.0
+        name: cfg-store-pv-container
+        ports:
+          - containerPort: 1389
+            protocol: TCP
+            name: ldap
+          - containerPort: 4444
+            protocol: TCP
+            name: admin
+        volumeMounts:
+        - mountPath: "/opt/opendj/data"
+          name: cfg-store-pv-storage
+      volumes:
+      - name: cfg-store-pv-storage
+        persistentVolumeClaim:
+          claimName: cfg-store-pv-claim
