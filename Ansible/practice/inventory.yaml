@@ -1,0 +1,27 @@
+---
+all:
+  hosts:
+    mail.example.com:
+  children:
+    groupA:
+      hosts:
+        OAM:
+    groupB:
+      hosts:
+        test1:
+          ansible_ssh_host: lb.mdc1host.com
+          ansible_connection: ssh 
+          ansible_user: ec2-user
+        mdc1:
+        mdc2:
+    groupC:
+      hosts:
+        mdc1:
+        mdc2: 
+    groupD: 
+      hosts: 
+        test1:
+          ansible_port: 5555
+          ansible_host: 192.0.2.50
+
+

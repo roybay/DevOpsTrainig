@@ -1,0 +1,47 @@
+---
+- name: Copy to remote
+  hosts: groupB
+  tags: 
+    - create-file
+  tasks: 
+    - name: Creates directory
+      file:
+        path: /home/ec2-user/TEST
+        state: directory
+
+    - name: example copying file with owner and permissions
+      copy:
+        src: ./test_file.txt
+        dest: /home/ec2-user/TEST/1.txt
+        owner: ec2-user
+        group: ec2-user
+        mode: 0600
+
+    - name: example creting file
+      file:
+        dest: /home/ec2-user/TEST/4.txt
+        state: '{{file_state}}'
+
+    
+
+- name: Use different User
+  hosts: groupA
+  tags: 
+    - create-file
+  tasks: 
+    - name: example copying file with owner and permissions
+      copy:
+        src: ./test_file.txt
+        dest: /home/ec2-user/TEST/5.txt
+        owner: asteidl
+        group: asteidl
+        mode: 0600
+    - name: delete creting file
+      file:
+        dest: /home/ec2-user/TEST/4.txt
+        state: absent
+      tags:
+        - delete-file
+
+
+

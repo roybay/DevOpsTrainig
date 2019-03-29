@@ -1,0 +1,15 @@
+[groupA]
+OAM
+
+[groupB]
+test1 ansible_ssh_host=lb.mdc1host.com ansible_connection=ssh ansible_user=ec2-user
+OAM
+
+
+[groupC]
+mdc1
+mdc2
+
+[groupD]
+test1
+

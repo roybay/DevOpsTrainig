@@ -1,0 +1,91 @@
+# my global config
+global:
+  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 1m # Evaluate rules every 15 seconds. The default is every 1 minute.
+  #scrape_timeout is set to the global default (10s).
+  scrape_timeout: 15s
+
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+    - targets: ['localhost:9090']
+
+  - job_name: 'openam_node_exporter'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['openam-1-us-east:9100']
+        labels: {
+          alias: "OpenAM1"
+        }
+
+  - job_name: 'ds-usr-store-1_node_exporter'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['ds-usr-store-1-us-east:9100']
+        labels: {
+	  alias: "OpenDJ1"
+        }
+
+  - job_name: 'ds-usr-store-2_node_exporter'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['ds-usr-store-2-us-east:9100']
+        labels: {
+          alias: "OpenDJ2"
+        }
+
+  - job_name: 'openam-1-us-east'
+    metrics_path: '/am/json/metrics/prometheus'
+    scheme: https
+    tls_config:
+        # ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        # If your node certificates are self-signed or use a different CA to the
+        # master CA, then disable certificate verification below. Note that
+        # certificate verification is an integral part of a secure infrastructure
+        # so this should only be disabled in a controlled environment. You can
+        # disable certificate verification by uncommenting the line below.
+        #
+        insecure_skip_verify: true
+    basic_auth:
+        username: "prometheus"
+        password: "prometheus"
+    static_configs:
+      - targets: ['openam-1-us-east:8443']
+
+  - job_name: 'ds-usr-store-1-us-east'
+    metrics_path: '/metrics/prometheus'
+    basic_auth:
+        username: "Monitor"
+        password: "Password1!"
+    static_configs:
+      - targets: ['ds-usr-store-1-us-east:8080']
+
+  - job_name: 'ds-usr-store-2-us-east'
+    metrics_path: '/metrics/prometheus'
+    basic_auth:
+        username: "Monitor"
+        password: "Password1!"
+    static_configs:
+      - targets: ['ds-usr-store-2-us-east:8080']
+
+

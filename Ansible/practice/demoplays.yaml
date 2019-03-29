@@ -1,0 +1,38 @@
+---
+- name: "Do a demo"
+  hosts: groupA
+
+  tasks: 
+    - name: demo task 1
+      debug:
+        msg: "this is a task 1"
+
+    - name: demo task 2
+      fail:
+        msg: "this is a task 2"
+      when: inventory_hostname == "mdc2"
+
+- name: "Do another demo"
+  hosts: groupB
+  serial: 1
+
+  tasks: 
+    - name: demo task 3
+      debug:
+        msg: "this is a task 3"
+
+    - name: demo task 4
+      debug:
+        msg: "this is a task 4"
+
+- name: Challenge Me
+  hosts: OAM
+
+  tasks: 
+    - name: example copying file with owner and permissions
+      copy:
+        src: /Users/rbahian/Desktop/repos/personal/DevOpsTraining/DevOpsTrainig/Ansible/practice/hosts
+        dest: /home/ec2-user/
+        owner: ec2-user
+        group: ec2-user
+        mode: 0700

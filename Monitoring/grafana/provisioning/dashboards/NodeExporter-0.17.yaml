@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+- name: '1 Node Exporter 0.17.0 (Host Metrics)'
+  orgId: 1
+  folder: 'VMs'
+  type: file
+  disableDeletion: true
+  updateIntervalSeconds: 1 #how often Grafana will scan for changed dashboards
+  options:
+    path: /etc/grafana/provisioning/dashboards/host-metrics_rev4.json

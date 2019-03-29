@@ -1,0 +1,11 @@
+apiVersion: 1
+
+datasources:
+ - name: ForgeRock
+   type: prometheus
+   access: proxy
+   isDefault: true
+   url: https://prom:443
+   editable: false
+   jsonData:
+     tlsSkipVerify: true
